@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+
+  application1:
+    build: ./Docker/ApachePHP7
+    ports :
+      - "8080:80"
+    volumes:
+      - ./mvc/:/var/www/html/
+    links:
+      - database
+
+  application3:
+    build: ./Docker/ApachePHP7
+    ports :
+      - "8060:80"
+    volumes:
+      - ./Symfony/:/var/www/html/          
+      - ./timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
+    links:
+      - database    
+
+  application4:
+    build: ./Docker/ApachePHP7
+    ports :
+      - "8050:80"
+    volumes:
+      - ./autre/:/var/www/html/
+    links:
+      - database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports :
+      - "8090:80"
+    environment:
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+    links:
+      - database:db
+
+  database:
+    image: mysql:5.5
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
