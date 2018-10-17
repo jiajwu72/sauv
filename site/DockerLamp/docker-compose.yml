@@ -1,0 +1,39 @@
+version: "3"
+services:
+
+  applicationphp7:
+    build: ./Docker/ApachePHP7
+    ports :
+     - "8070:80"
+    volumes:
+     - ./ApplicationPHP7/:/var/www/html/
+    links:
+     - database
+
+  applicationphp5:
+      build: ./Docker/ApachePHP5
+      ports :
+       - "8090:80"
+      volumes:
+       - ./ApplicationPHP5/:/var/www/html/
+      links:
+       - database
+
+  phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     ports :
+      - "8020:80"
+     environment:
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+     links:
+      - database:db
+
+  database:
+    image: mysql:5.5
+    ports:
+     - "3306:3306"
+    volumes:
+     - ./Database:/var/lib/mysql 
+    environment:
+       - MYSQL_ROOT_PASSWORD=root

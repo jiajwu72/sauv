@@ -1,0 +1,1 @@
+select title, summary from film where title LIKE "%42%" OR summary LIKE "%42%" ORDER BY duration ASC;
